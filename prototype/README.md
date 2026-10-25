@@ -3,7 +3,17 @@
 Prototype d'interface **non fonctionnel** construit sur **Materialize CSS 1.0.0**, d'après les maquettes de
 référence fournies et les trois versions du PRD rangées dans `../kb/`.
 
-## Ouvrir le prototype
+## Voir le prototype
+
+**En ligne : https://signalement-public-bf.vercel.app**
+
+| Route | Contenu |
+|---|---|
+| `/` | Vitrine : planche des 8 écrans, captures de la console, couverture du PRD |
+| `/citoyen` | Parcours citoyen mobile |
+| `/console` | Console de traitement |
+
+En local :
 
 ```bash
 cd prototype
