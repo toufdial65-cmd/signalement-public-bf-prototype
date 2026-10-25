@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signalement Public BF — Console de traitement</title>
+<link rel="stylesheet" href="vendor/css/materialize.min.css">
+<link rel="stylesheet" href="vendor/fonts/fonts-local.css">
+<link rel="stylesheet" href="vendor/fonts/icons-local.css">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body class="console-body">
+
+<!-- ================= BARRE HAUTE ================= -->
+<header class="topbar">
+  <a class="brand brand--inv" href="#" onclick="return false;">
+    <span class="brand-mark"><i class="material-icons">location_on</i></span>
+    <span class="brand-txt">Signalement <span>Public BF</span></span>
+  </a>
+  <div class="topbar-search">
+    <i class="material-icons">search</i>
+    <input type="text" id="recherche" placeholder="Rechercher une référence, un quartier, un mot-clé…">
+  </div>
+  <div class="topbar-right">
+    <span class="demo-chip">Prototype · données simulées</span>
+    <button class="iconbtn" title="Notifications"><i class="material-icons">notifications_none</i></button>
+    <span class="avatar">AS</span>
+    <div style="line-height:1.25;">
+      <div style="font-size:12.5px;font-weight:600;">Aminata Sawadogo</div>
+      <div style="font-size:10.5px;color:rgba(255,255,255,.55);">Agent de tri · Gounghin</div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= NAVIGATION LATÉRALE ================= -->
+<aside class="console-sidenav" id="sidenav">
+  <div class="nav-group-label">Traitement</div>
+  <a class="nav-item is-on" data-vue="file"><i class="material-icons">inbox</i>File de travail<span class="nav-count">27</span></a>
+  <a class="nav-item" data-vue="dossiers"><i class="material-icons">folder_open</i>Tous les dossiers<span class="nav-count">184</span></a>
+  <a class="nav-item" data-vue="risques"><i class="material-icons">priority_high</i>Risques immédiats<span class="nav-count nav-count--hot">3</span></a>
+  <a class="nav-item" data-vue="doublons"><i class="material-icons">content_copy</i>Doublons à traiter<span class="nav-count">9</span></a>
+  <a class="nav-item" data-vue="orientation"><i class="material-icons">alt_route</i>À orienter<span class="nav-count">6</span></a>
+
+  <div class="nav-group-label">Pilotage</div>
+  <a class="nav-item" data-vue="indicateurs"><i class="material-icons">insights</i>Indicateurs</a>
+  <a class="nav-item" data-vue="routage"><i class="material-icons">hub</i>Règles de routage</a>
+  <a class="nav-item" data-vue="audit"><i class="material-icons">history</i>Journal d'audit</a>
+  <a class="nav-item" data-vue="roles"><i class="material-icons">admin_panel_settings</i>Rôles et accès</a>
+</aside>
+
+<!-- ================= CONTENU ================= -->
+<main class="console-main">
+
+  <!-- ---------- VUE : FILE DE TRAVAIL ---------- -->
+  <section class="vue" id="vue-file">
+    <div class="page-head">
+      <div>
+        <h1>File de travail</h1>
+        <p>Dossiers à vérifier dans votre périmètre. Une priorité suggérée ne remplace jamais votre décision.</p>
+      </div>
+    </div>
+
+    <div class="kpi-grid" id="kpi-grid"></div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Dossiers actifs</h2>
+        <span class="spacer"></span>
+        <div class="filter-chips">
+          <button class="fchip is-on" data-f="tous">Tous</button>
+          <button class="fchip" data-f="risque">Risque immédiat</button>
+          <button class="fchip" data-f="attente">En attente &gt; 48 h</button>
+          <button class="fchip" data-f="doublon">Doublon possible</button>
+          <button class="fchip" data-f="nonrecu">Non orientés</button>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="toolbar">
+          <select id="f-cat">
+            <option value="">Toutes les catégories</option>
+          </select>
+          <select id="f-statut">
+            <option value="">Tous les statuts</option>
+          </select>
+          <select id="f-zone">
+            <option value="">Toutes les zones</option>
+          </select>
+          <input type="text" id="f-texte" placeholder="Filtrer par référence ou mot-clé…">
+          <span class="spacer" style="margin-left:auto;"></span>
+          <button class="btn btn-ghost btn-flat" id="btn-export"><i class="material-icons">download</i> Export agrégé</button>
+        </div>
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th style="width:150px;">Référence</th>
+              <th>Problème</th>
+              <th style="width:170px;">Localisation</th>
+              <th style="width:86px;">Priorité</th>
+              <th style="width:170px;">Statut</th>
+              <th style="width:120px;">Déposé le</th>
+              <th style="width:96px;"></th>
+            </tr>
+          </thead>
+          <tbody id="tbody-file"></tbody>
+        </table>
+        <div id="empty-file" style="display:none;text-align:center;padding:36px 10px;color:var(--spbf-ink-3);">
+          <i class="material-icons" style="font-size:34px;color:var(--spbf-line-strong);">filter_alt_off</i>
+          <div style="margin-top:8px;font-size:13px;">Aucun dossier ne correspond à ces filtres.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- VUE : INDICATEURS ---------- -->
+  <section class="vue" id="vue-indicateurs" style="display:none;">
+    <div class="page-head">
+      <div>
+        <h1>Indicateurs de pilotage</h1>
+        <p>Mesures du pilote. Un dépôt reçu mesure l'adoption, pas l'impact : un problème corrigé n'est compté qu'avec la confirmation du partenaire.</p>
+      </div>
+    </div>
+
+    <div class="kpi-grid" id="kpi-grid-2"></div>
+
+    <div style="display:grid;grid-template-columns:1.35fr 1fr;gap:16px;">
+      <div class="panel">
+        <div class="panel-head"><h2>Dépôts sur 7 jours</h2><span class="spacer"></span><span style="font-size:12px;color:var(--spbf-ink-3);">184 signalements</span></div>
+        <div class="panel-body"><div class="bars" id="bars-volumes"></div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h2>Répartition par catégorie</h2></div>
+        <div class="panel-body" id="repartition"></div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px;">
+      <div class="panel-head"><h2>Ce que ces chiffres ne disent pas</h2></div>
+      <div class="panel-body">
+        <ul class="rule-list" style="padding-left:18px;margin:0;">
+          <li>Le délai de premier tri est mesuré en heures ouvrées ; hors heures, il paraît plus long.</li>
+          <li>Le taux de doublons augmente quand l'usage augmente : ce n'est pas un indicateur de qualité.</li>
+          <li>Aucun délai de réparation n'est publié tant que la capacité des partenaires n'est pas engagée.</li>
+          <li>Les cibles 85 % exploitable / 80 % localisable sont des hypothèses de conception à tester, pas des résultats acquis.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- VUE : ROUTAGE ---------- -->
+  <section class="vue" id="vue-routage" style="display:none;">
+    <div class="page-head">
+      <div>
+        <h1>Règles de routage</h1>
+        <p>La catégorie ne suffit pas à désigner le responsable. Sans destination confirmée, le statut reste « À orienter ».</p>
+      </div>
+      <button class="btn btn-grad btn-flat" style="margin-left:auto;"><i class="material-icons">add</i> Nouvelle règle</button>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h2>Organismes et canaux de transmission</h2></div>
+      <div class="panel-body">
+        <table class="tbl">
+          <thead><tr><th>Organisme</th><th>Catégories couvertes</th><th>Zone</th><th>Canal autorisé</th><th>Dernière vérification</th><th style="width:120px;">État</th></tr></thead>
+          <tbody id="tbody-org"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- VUE : AUDIT ---------- -->
+  <section class="vue" id="vue-audit" style="display:none;">
+    <div class="page-head">
+      <div>
+        <h1>Journal d'audit</h1>
+        <p>Traçabilité des consultations et modifications sensibles. Les contenus sensibles ne sont pas journalisés.</p>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h2>Événements récents</h2></div>
+      <div class="panel-body"><table class="tbl">
+        <thead><tr><th style="width:160px;">Date</th><th style="width:210px;">Acteur</th><th style="width:200px;">Action</th><th style="width:160px;">Objet</th><th>Détail</th><th style="width:110px;">Résultat</th></tr></thead>
+        <tbody id="tbody-audit"></tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- ---------- VUE : RÔLES ---------- -->
+  <section class="vue" id="vue-roles" style="display:none;">
+    <div class="page-head">
+      <div>
+        <h1>Rôles et accès</h1>
+        <p>Le citoyen n'accède jamais à la console. Chaque agent ne voit que les catégories et zones nécessaires à sa mission.</p>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-body">
+        <table class="tbl">
+          <thead><tr><th style="width:190px;">Rôle</th><th style="width:230px;">Dossiers visibles</th><th>Actions</th></tr></thead>
+          <tbody id="tbody-roles"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- VUE : TOUS LES DOSSIERS ---------- -->
+  <section class="vue" id="vue-dossiers" style="display:none;">
+    <div class="page-head">
+      <div>
+        <h1>Tous les dossiers</h1>
+        <p>Vue complète du périmètre autorisé, tous statuts confondus.</p>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-body">
+        <div class="toolbar">
+          <select id="f-cat2"><option value="">Toutes les catégories</option></select>
+          <select id="f-statut2"><option value="">Tous les statuts</option></select>
+          <input type="text" id="f-texte2" placeholder="Filtrer…">
+        </div>
+        <table class="tbl">
+          <thead><tr><th style="width:150px;">Référence</th><th>Problème</th><th style="width:170px;">Localisation</th><th style="width:86px;">Priorité</th><th style="width:170px;">Statut</th><th style="width:120px;">Déposé le</th><th style="width:96px;"></th></tr></thead>
+          <tbody id="tbody-all"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- VUES DÉDIÉES (filtres) ---------- -->
+  <section class="vue" id="vue-risques" style="display:none;">
+    <div class="page-head"><div><h1>Risques immédiats</h1><p>Dossiers où un danger a été déclaré. L'avertissement au citoyen est obligatoire à la saisie.</p></div></div>
+    <div class="panel"><div class="panel-body"><div id="risques-list"></div></div></div>
+  </section>
+
+  <section class="vue" id="vue-doublons" style="display:none;">
+    <div class="page-head"><div><h1>Doublons à traiter</h1><p>La fusion conserve le dossier principal et les références liées. Rien n'est supprimé.</p></div></div>
+    <div class="panel"><div class="panel-body"><div id="doublons-list"></div></div></div>
+  </section>
+
+  <section class="vue" id="vue-orientation" style="display:none;">
+    <div class="page-head"><div><h1>Dossiers à orienter</h1><p>En attente du responsable de l'ouvrage. Sans accord actif, le dossier ne peut pas passer à « Transmis ».</p></div></div>
+    <div class="panel"><div class="panel-body"><div id="orientation-list"></div></div></div>
+  </section>
+
+</main>
+
+<!-- ================= PANNEAU DOSSIER ================= -->
+<aside class="detail" id="detail">
+  <button class="detail-close" id="detail-close"><i class="material-icons">close</i></button>
+  <div class="detail-head">
+    <span class="dossier-ref" id="d-ref"></span>
+    <div style="display:flex;gap:8px;align-items:center;margin-top:7px;flex-wrap:wrap;">
+      <span id="d-statut"></span>
+      <span id="d-prio"></span>
+    </div>
+  </div>
+  <div class="detail-body" id="d-body"></div>
+  <div class="detail-foot">
+    <button class="btn btn-ghost btn-flat" id="d-precis" style="flex:1;">Demander une précision</button>
+    <button class="btn btn-grad btn-flat" id="d-valider" style="flex:1;">Valider le dossier</button>
+  </div>
+</aside>
+
+<!-- ================= MODALE ACTION ================= -->
+<div class="modal" id="modal-action">
+  <div class="modal-content">
+    <h5 id="modal-title">Action sur le dossier</h5>
+    <p id="modal-sub" style="font-size:13px;color:var(--spbf-ink-3);margin-top:-6px;"></p>
+    <div class="input-field" style="margin-top:18px;">
+      <textarea id="modal-motif" class="materialize-textarea" style="min-height:90px;" placeholder="Motif (obligatoire pour cette action)"></textarea>
+      <label for="modal-motif" class="active">Motif</label>
+    </div>
+    <p class="hint hint--err" id="modal-err" style="display:none;"><i class="material-icons">error_outline</i> Le motif est obligatoire pour cette transition.</p>
+    <div id="modal-extra"></div>
+  </div>
+  <div class="modal-footer">
+    <a class="modal-close btn btn-ghost btn-flat" href="#!">Annuler</a>
+    <button class="btn btn-grad btn-flat" id="modal-ok">Confirmer</button>
+  </div>
+</div>
+
+<script src="vendor/js/jquery.min.js"></script>
+<script src="vendor/js/materialize.min.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/console.js"></script>
+</body>
+</html>

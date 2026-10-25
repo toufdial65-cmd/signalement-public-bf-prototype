@@ -1,0 +1,168 @@
+---
+name: rediger-prd
+description: Rédiger ou restructurer un PRD synthétique en français, limité à deux pages et organisé en huit sections obligatoires : Contexte, Objectifs, Utilisateurs, Fonctionnalités, Hors périmètre, Critères de réception, Contraintes et Livrables.
+---
+
+# Rédaction d’un PRD synthétique
+
+## Mission
+
+Transformer une idée, une transcription orale, des notes de réunion ou un document existant en un Product Requirements Document (PRD) clair, testable et directement exploitable par le commanditaire et l’équipe de réalisation.
+
+Le PRD final doit contenir exactement huit sections, dans l’ordre imposé, et tenir sur deux pages maximum. Cette limite concerne le PRD produit, pas le présent fichier de consignes.
+
+## Quand utiliser ce skill
+
+- L’utilisateur demande un PRD, un cadrage produit ou un cahier des charges synthétique.
+- L’utilisateur fournit une idée peu structurée ou une transcription à formaliser.
+- L’utilisateur demande de remettre un document dans la structure imposée.
+- L’utilisateur souhaite corriger un PRD trop long, non testable ou insuffisamment délimité.
+
+## Entrées utiles
+
+Extraire, lorsqu’ils sont disponibles : le problème, le contexte, les résultats attendus, les utilisateurs, les parcours, les fonctionnalités, les exclusions, les critères de validation, les contraintes et les livrables.
+
+Ne pas exiger un dossier complet avant de commencer. Exploiter d’abord les informations déjà présentes dans la conversation et les documents fournis.
+
+## Règles de travail
+
+1. Distinguer les faits fournis, les propositions et les points à confirmer.
+2. Ne jamais inventer un budget, une échéance, un volume, une règle métier, une intégration, une obligation légale ou un engagement de performance.
+3. Marquer une information manquante par « À confirmer » ou « À définir ». Présenter une suggestion comme « Proposition à valider ».
+4. Poser au maximum trois questions ciblées si une ambiguïté empêche réellement le cadrage. Sinon, produire une première version avec les réserves intégrées dans les sections concernées.
+5. Respecter le vocabulaire métier et expliquer les sigles nécessaires à leur première occurrence.
+6. Décrire les besoins et comportements attendus avant les choix techniques. Ne pas imposer de framework ou d’architecture sans demande explicite.
+7. Ne pas transformer une option suggérée par l’assistant en exigence validée.
+8. Lors d’une révision, conserver les décisions acquises et ne modifier que ce qui est demandé ou nécessaire à la cohérence.
+9. Consulter des sources externes uniquement si le cadrage exige une vérification factuelle. Ne pas présenter une hypothèse comme un fait établi.
+
+## Processus
+
+### Étape 1 — Extraire et clarifier
+
+Identifier le problème à résoudre, les bénéficiaires, la valeur attendue et le périmètre de la première version. Repérer les contradictions et les décisions manquantes.
+
+### Étape 2 — Structurer
+
+Répartir chaque information dans l’une des huit sections obligatoires. Éliminer les répétitions. Une fonctionnalité décrit une capacité ; un critère de réception prouve qu’elle fonctionne ; un livrable désigne ce qui sera remis.
+
+### Étape 3 — Délimiter
+
+Séparer le périmètre retenu des extensions. Si la première version n’est pas définie, présenter sa délimitation comme une proposition à valider. Ne pas inventer de feuille de route.
+
+### Étape 4 — Rendre vérifiable
+
+Associer les fonctionnalités principales à des critères observables. Vérifier les permissions, les données nécessaires et les cas d’erreur pertinents. Ne pas ajouter de seuil numérique arbitraire pour rendre un critère apparemment précis.
+
+### Étape 5 — Compacter et contrôler
+
+Réduire le texte sans supprimer les exigences essentielles. Viser environ 650 à 900 mots, tableaux compris, comme repère éditorial : seul le contrôle du document mis en page confirme la limite de deux pages.
+
+## Structure obligatoire du PRD
+
+Le titre du document peut précéder les sections. Il ne constitue pas une section supplémentaire. Ne pas ajouter de résumé exécutif, de conclusion, de roadmap, d’annexes ou de section « Questions ouvertes ». Intégrer les points à confirmer dans la section pertinente.
+
+### 1. Contexte
+
+En un ou deux courts paragraphes :
+- Décrire la situation actuelle et le problème.
+- Identifier les structures ou populations concernées.
+- Présenter la réponse envisagée sans détailler toutes ses fonctionnalités.
+
+Éviter les statistiques, affirmations de terrain et causes non fournies ou non vérifiées.
+
+### 2. Objectifs
+
+Présenter trois à cinq résultats attendus. Employer des verbes précis : réduire, permettre, centraliser, détecter, suivre ou faciliter.
+
+Distinguer le résultat attendu du moyen technique. Si une cible chiffrée manque, conserver un objectif qualitatif et signaler la cible à définir seulement si elle est nécessaire à la réception.
+
+### 3. Utilisateurs
+
+Présenter un tableau compact :
+
+| Profil | Besoins et responsabilités |
+|---|---|
+| [Profil] | [Ce qu’il doit consulter ou réaliser, dans quel périmètre] |
+
+Ne créer que les profils nécessaires. Distinguer les droits de consultation, de saisie, de validation et d’administration lorsqu’ils diffèrent.
+
+### 4. Fonctionnalités
+
+Regrouper les fonctions en trois à cinq blocs maximum. Utiliser des puces courtes et, si utile, des identifiants F01, F02, etc.
+
+Décrire pour chaque fonction essentielle :
+- L’acteur concerné.
+- L’action ou le déclencheur.
+- Les informations essentielles.
+- Le résultat ou la règle métier attendue.
+
+Préciser les états, filtres, permissions, notifications ou règles de calcul uniquement lorsqu’ils sont utiles et confirmés. Si nécessaire, marquer la règle « À confirmer ».
+
+### 5. Hors périmètre
+
+Lister trois à six exclusions significatives pour prévenir les malentendus : processus non couverts, automatisations non prévues, intégrations différées ou fonctionnalités d’une version ultérieure.
+
+Ne pas exclure un besoin explicitement demandé sans le signaler et obtenir un arbitrage. Distinguer une exclusion validée d’une proposition d’exclusion.
+
+### 6. Critères de réception
+
+Utiliser un tableau de quatre à huit critères couvrant les fonctionnalités principales :
+
+| Référence | Scénario ou condition | Résultat attendu |
+|---|---|---|
+| CR01 — F01 | [Contexte et action de test] | [Résultat observable] |
+
+Les critères doivent être testables et non subjectifs. Préférer « Un utilisateur sans autorisation ne peut pas consulter les données d’une autre structure » à « Le système est sécurisé ».
+
+Pour une règle conditionnelle, utiliser au besoin : « Étant donné [état], lorsque [action], alors [résultat] ».
+
+Pour une performance, indiquer le seuil et les conditions seulement s’ils ont été validés ; sinon noter qu’ils restent à définir avant recette. Ne pas promettre une acceptation définitive avec des paramètres bloquants non résolus.
+
+### 7. Contraintes
+
+Retenir uniquement les contraintes pertinentes :
+- Accès, équipements, connectivité et éventuel fonctionnement hors connexion.
+- Confidentialité, droits, traçabilité et sauvegardes.
+- Hébergement, interopérabilité et dépendances à des données externes.
+- Budget, calendrier et responsabilités.
+
+Distinguer contraintes confirmées et décisions à prendre. Ne pas attribuer au projet une conformité réglementaire non vérifiée.
+
+### 8. Livrables
+
+Lister les éléments effectivement remis : application, configuration initiale, documentation, code source si prévu, formation, rapport de tests et procès-verbal de recette.
+
+Adapter cette liste au périmètre contractuel connu. Indiquer « À confirmer » pour la cession du code, l’hébergement, la maintenance ou la formation s’ils ne sont pas validés. Ne pas confondre livrable, fonctionnalité et objectif.
+
+## Règles de présentation
+
+- Rédiger en français simple, professionnel et direct.
+- Employer exactement les huit titres demandés, dans leur ordre.
+- Favoriser les puces et tableaux compacts ; éviter les grandes tables difficiles à lire sur une page.
+- Utiliser des sous-titres courts seulement si cela améliore la lisibilité.
+- Ne pas répéter une fonctionnalité dans plusieurs sections sans apporter une précision utile.
+- Fournir directement le PRD, sans longue introduction ni commentaire sur la méthode.
+- Respecter la limite de deux pages sans réduire excessivement la taille des caractères.
+- Pour un PDF ou document paginé : vérifier le nombre réel de pages et réviser si nécessaire.
+- Pour une réponse Markdown : rester dans le budget éditorial sans affirmer qu’une pagination a été vérifiée.
+
+## Contrôle final
+
+Avant remise, vérifier :
+- [ ] Exactement huit sections, dans l’ordre demandé.
+- [ ] Problème et périmètre compréhensibles sans explication orale.
+- [ ] Objectifs distincts des fonctionnalités.
+- [ ] Profils et responsabilités clairement identifiés.
+- [ ] Fonctionnalités cohérentes avec les besoins exprimés.
+- [ ] Exclusions explicites, sans suppression silencieuse d’un besoin.
+- [ ] Critères observables couvrant les fonctions essentielles.
+- [ ] Contraintes et décisions manquantes visibles.
+- [ ] Livrables alignés sur le périmètre.
+- [ ] Aucune donnée, obligation ou promesse inventée.
+- [ ] Aucune suggestion présentée comme une décision acquise.
+- [ ] Deux pages maximum après mise en page, si un document paginé est généré.
+
+## Consigne de sortie
+
+Livrer uniquement le PRD demandé, avec son titre et ses huit sections. Si l’utilisateur demande le fichier, produire le format demandé. Ne pas ajouter de section explicative après le PRD. Toute réserve indispensable doit figurer dans la section concernée.

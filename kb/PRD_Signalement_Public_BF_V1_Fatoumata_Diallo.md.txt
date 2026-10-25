@@ -1,0 +1,79 @@
+# PRD — Signalement Public BF — V1
+
+Promotrice : **Fatoumata Diallo**  
+Nom de travail du projet : Signalement Public BF — à valider  
+Version : V1 · Date : 24 octobre 2026  
+Périmètre : pilote dans une commune ou une zone urbaine à confirmer.
+
+## 1. Contexte
+
+Le projet vise à structurer les signalements citoyens concernant les problèmes de l’espace public au Burkina Faso : voirie, électricité, eau, circulation, assainissement, déchets et équipements publics. Le besoin décrit dans le cadrage initial est de centraliser les informations, localiser les incidents, limiter les doublons et faciliter le suivi.
+
+La réponse envisagée est un site web adapté aux téléphones, permettant un dépôt sans compte et un suivi par référence. Les dossiers sont vérifiés avant orientation vers un organisme dont le circuit de réception est confirmé. La plateforme ne constitue pas un service d’urgence et ne garantit ni intervention ni réparation.
+
+## 2. Objectifs
+
+- Centraliser les signalements dans des dossiers structurés et localisables.
+- Faciliter le dépôt, y compris sans GPS ou sans photo.
+- Permettre aux agents de vérifier, dédoublonner et orienter les dossiers.
+- Donner au citoyen une visibilité sur l’avancement et le motif de clôture.
+- Mesurer la qualité des dossiers et la charge de traitement pendant le pilote.
+
+## 3. Utilisateurs
+
+| Profil | Besoins et responsabilités |
+|---|---|
+| Citoyen / déclarant | Déposer sans compte, conserver sa référence et consulter les informations publiques de son dossier. |
+| Agent de tri | Vérifier, modérer, prioriser, demander des précisions et rattacher les doublons dans son périmètre autorisé. |
+| Service partenaire | Consulter les dossiers affectés et renseigner les suites effectivement données. |
+| Administrateur / superviseur | Configurer les catégories, zones, rôles et circuits ; consulter les indicateurs et l’audit selon ses droits. |
+
+Le citoyen n’accède pas à la console interne ; les agents disposent uniquement des accès nécessaires à leur mission.
+
+## 4. Fonctionnalités
+
+- F01 — Dépôt citoyen : choisir une catégorie, décrire les faits et fournir une localisation par GPS autorisé ou saisie manuelle. Photo et contact facultatifs. Afficher les limites du service et l’avertissement d’urgence.
+- F02 — Enregistrement et suivi : créer une référence aléatoire non séquentielle après enregistrement réussi. Afficher le statut, les dates, les demandes de précision et le motif public de clôture, sans exposer les notes internes.
+- F03 — Traitement des dossiers : permettre aux agents autorisés de filtrer, vérifier, modérer, prioriser et lier les doublons. Conserver l’historique des actions ; une suggestion de priorité ne remplace pas la décision humaine.
+- F04 — Orientation et clôture : affecter selon la catégorie, la zone et un circuit validé. Sans destination confirmée, conserver « À orienter ». Exiger un transfert réel pour « Transmis » et une note avec source de confirmation pour « Résolu ».
+- F05 — Administration et traçabilité : gérer les permissions et règles de routage, journaliser les actions sensibles et présenter des indicateurs agrégés selon les droits.
+
+## 5. Hors périmètre
+
+- Application mobile native obligatoire au lancement.
+- Prise en charge des urgences ou garantie de délai de réparation.
+- Transmission automatique à un organisme sans accord actif.
+- Carte publique avec coordonnées exactes et commentaires publics ouverts.
+- Notifications SMS/WhatsApp, interfaces partenaires et traductions en langues nationales : extensions à arbitrer après le pilote.
+- Déploiement national dès la première version.
+
+## 6. Critères de réception
+
+| Référence | Scénario ou condition | Résultat attendu |
+|---|---|---|
+| CR01 — F01 | Envoyer un dossier incomplet ; refuser le GPS. | Les champs indispensables manquants sont signalés ; la localisation manuelle permet de poursuivre. |
+| CR02 — F01 | Déposer sans photo ; joindre un fichier non autorisé. | Le dépôt sans photo fonctionne ; le fichier invalide est refusé avec un message explicite. Les métadonnées des photos acceptées sont retirées. |
+| CR03 — F02 | Envoi réussi ou interruption réseau avant confirmation. | La référence apparaît uniquement après enregistrement confirmé ; aucune fausse confirmation n’est affichée. |
+| CR04 — F02/F05 | Consulter un dossier ou tenter un accès non autorisé. | Le suivi n’expose ni contacts ni notes internes ; les accès hors droits sont refusés. |
+| CR05 — F03 | Modérer un dossier ou le rattacher à un doublon. | L’action, son auteur et sa date sont tracés ; le lien vers le dossier principal est conservé. |
+| CR06 — F04 | Marquer « Transmis » sans transfert ou « Résolu » sans justification. | La transition est bloquée tant que les éléments requis ne sont pas renseignés. |
+| CR07 — F01/F03 | Déclarer un danger immédiat. | L’avertissement est affiché et le risque est mis en évidence pour le tri, sans promesse d’intervention. |
+| CR08 — F05 | Consulter la console avec différents rôles. | Les dossiers, fonctions et indicateurs accessibles correspondent aux permissions attribuées. |
+
+## 7. Contraintes
+
+- Usage prioritaire sur smartphone et connexion variable : interface légère, photo facultative et saisie manuelle du lieu.
+- Séparation des données citoyennes, internes et de contact ; contrôle d’accès côté serveur, protection contre les abus et sauvegardes avec restauration testée.
+- Avant lancement : identifier l’opérateur, le responsable du traitement, l’équipe de tri et les suppléants ; confirmer un circuit opérationnel pour chaque catégorie activée.
+- Faire vérifier le cadre juridique applicable, la confidentialité, les durées de conservation et l’hébergement avant production ; aucune conformité n’est présumée acquise.
+- À confirmer : zone pilote, partenaires, contacts d’urgence, modalités de réponse aux demandes de précision, budget, calendrier, hébergement et responsabilités d’exploitation. Aucun choix de framework n’est imposé ici.
+
+## 8. Livrables
+
+Périmètre de remise proposé, à valider contractuellement :
+
+- Site web citoyen et console de traitement correspondant aux fonctions retenues.
+- Configuration initiale des catégories, zones, rôles et circuits validés.
+- Documentation d’utilisation et procédures de tri, modération, orientation et clôture.
+- Rapport de tests et procès-verbal de recette indiquant les réserves éventuelles.
+- À confirmer : remise et droits sur le code source, déploiement, formation, maintenance et support.

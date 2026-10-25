@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Signalement Public BF — Prototype citoyen</title>
+<meta name="description" content="Prototype non fonctionnel de la plateforme Signalement Public BF.">
+<link rel="stylesheet" href="vendor/css/materialize.min.css">
+<link rel="stylesheet" href="vendor/fonts/fonts-local.css">
+<link rel="stylesheet" href="vendor/fonts/icons-local.css">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body class="device-stage">
+
+<div class="device">
+  <div class="device-screen">
+    <div id="toastHost"></div>
+
+<!-- ================= ÉCRAN : ACCUEIL ================= -->
+<section class="screen" id="sc-accueil">
+  <div class="device-scroll" data-scroll>
+    <div class="statusbar"><span>09:41</span><span class="statusbar-icons"><i class="material-icons">signal_cellular_alt</i><i class="material-icons">wifi</i><i class="material-icons">battery_full</i></span></div>
+
+    <header class="appbar">
+      <div class="appbar-row">
+        <a class="brand brand--inv" href="#" onclick="return false;">
+          <span class="brand-mark"><i class="material-icons">location_on</i></span>
+          <span class="brand-txt">Signalement <span>Public BF</span></span>
+        </a>
+        <div class="appbar-actions">
+          <button class="iconbtn" data-nav="sc-aide" title="Ce que fait ce service"><i class="material-icons">help_outline</i></button>
+        </div>
+      </div>
+    </header>
+
+    <div class="screen-body">
+      <div class="hero">
+        <h2>Un problème dans l'espace public&nbsp;?</h2>
+        <p>Signalez-le en 3 minutes, sans créer de compte. Vous suivrez son état avec une référence.</p>
+        <button class="btn btn-amber btn-large btn-block hero-cta" data-nav="sc-formulaire">
+          <i class="material-icons">add_a_photo</i> Signaler un problème
+        </button>
+      </div>
+
+      <div class="alert-urgent">
+        <i class="material-icons">warning</i>
+        <div>
+          <b>Ce service n'est pas un canal d'urgence.</b>
+          <span>Câble électrique tombé, effondrement, accident&nbsp;: éloignez-vous et contactez directement le service compétent. N'attendez pas une réponse ici.</span>
+        </div>
+      </div>
+
+      <div class="sec-title">Que voulez-vous signaler&nbsp;?</div>
+      <div class="cat-grid" id="cat-grid-accueil"></div>
+
+      <div class="sec-title">Suivre un signalement</div>
+      <div class="pill-field">
+        <i class="material-icons pill-ico">qr_code_2</i>
+        <input type="text" id="suivi-ref-accueil" placeholder="Saisissez votre référence (ex. SPBF-9JKP-44TN)" autocomplete="off">
+      </div>
+      <button class="btn btn-grad btn-block" id="btn-suivi-accueil">
+        <i class="material-icons">search</i> Consulter le statut
+      </button>
+      <p class="hint hint--err" id="err-suivi-accueil" style="display:none;"><i class="material-icons">error_outline</i> Aucun dossier ne correspond à cette référence. Vérifiez la saisie ou saisissez-la à nouveau.</p>
+      <p class="hint">La référence s'affiche à l'écran juste après l'envoi. Vous pouvez aussi la retrouver dans le SMS ou le courriel que vous avez demandé.</p>
+
+      <div class="sec-title">Comment ça marche</div>
+      <div class="panel" style="border-radius:14px;">
+        <div class="panel-body" style="padding:16px 18px;">
+          <div class="chk"><i class="material-icons">check_circle</i><div><b>1. Vous décrivez.</b> Catégorie, lieu, description. La photo est facultative.</div></div>
+          <div class="chk"><i class="material-icons">check_circle</i><div><b>2. Vous recevez une référence.</b> Elle est affichée seulement après l'enregistrement confirmé.</div></div>
+          <div class="chk"><i class="material-icons">check_circle</i><div><b>3. Un agent vérifie.</b> Le dossier est contrôlé, dédoublonné et orienté vers le service compétent.</div></div>
+          <div class="chk off"><i class="material-icons">info</i><div><b>Ce que ce service ne fait pas.</b> Il ne garantit ni intervention, ni délai de réparation, ni budget.</div></div>
+        </div>
+      </div>
+
+      <p class="hint" style="margin-top:18px;text-align:center;">
+        Prototype non fonctionnel — données de démonstration.<br>
+        Opérateur du service, responsable de traitement et hébergement à confirmer.
+      </p>
+    </div>
+
+    <nav class="tabbar">
+      <button class="is-on" data-nav="sc-accueil"><i class="material-icons">home</i>Accueil</button>
+      <button data-nav="sc-formulaire"><i class="material-icons">add_circle_outline</i>Signaler</button>
+      <button data-nav="sc-suivi"><i class="material-icons">receipt_long</i>Suivi</button>
+      <button data-nav="sc-aide"><i class="material-icons">info_outline</i>Aide</button>
+    </nav>
+  </div>
+</section>
+
+<!-- ================= ÉCRAN : FORMULAIRE ================= -->
+<section class="screen" id="sc-formulaire">
+  <div class="device-scroll" data-scroll>
+    <div class="statusbar"><span>09:41</span><span class="statusbar-icons"><i class="material-icons">signal_cellular_alt</i><i class="material-icons">wifi</i><i class="material-icons">battery_full</i></span></div>
+
+    <header class="appbar appbar--flat">
+      <div class="appbar-row">
+        <button class="iconbtn" data-nav="sc-accueil" style="background:#F1F4F6;color:var(--spbf-ink);"><i class="material-icons">arrow_back</i></button>
+        <div class="brand-txt" style="font-weight:700;font-size:15px;">Nouveau signalement</div>
+      </div>
+    </header>
+
+    <div class="screen-body">
+      <div class="steps" id="form-steps">
+        <span class="st is-on"></span><span class="st"></span><span class="st"></span><span class="st"></span>
+      </div>
+      <div class="step-head">Étape <b id="form-step-num">1</b> sur 4 — <span id="form-step-name">Type de problème</span></div>
+
+      <!-- Étape 1 : catégorie -->
+      <div class="form-step" data-step="1">
+        <p class="hint" style="margin:0 0 12px;">Choisissez la catégorie qui correspond le mieux au constat. Une seule réponse est possible.</p>
+        <div class="cat-grid" id="cat-grid-form"></div>
+        <p class="hint hint--err" id="err-cat" style="display:none;"><i class="material-icons">error_outline</i> Choisissez une catégorie pour continuer.</p>
+      </div>
+
+      <!-- Étape 2 : localisation -->
+      <div class="form-step" data-step="2" style="display:none;">
+        <div class="panel" style="margin-bottom:14px;border-radius:14px;">
+          <div class="panel-body" style="padding:16px 18px;">
+            <b style="font-size:14px;">Utiliser ma position</b>
+            <p class="hint" style="margin-top:4px;">La position n'est demandée qu'avec votre accord. Vous pouvez aussi décrire le lieu à la main.</p>
+            <button class="btn btn-grad btn-block" id="btn-gps" style="margin-top:12px;">
+              <i class="material-icons">my_location</i> Partager ma position
+            </button>
+            <p class="hint hint--err" id="err-gps" style="display:none;"><i class="material-icons">error_outline</i> Position non obtenue — indiquez le lieu à la main, c'est suficiente.</p>
+          </div>
+        </div>
+
+        <div class="sec-title" style="margin-top:6px;">Ou décrivez le lieu</div>
+        <div class="pill-field">
+          <i class="material-icons pill-ico">location_city</i>
+          <select id="f-commune">
+            <option value="">Commune ou arrondissement</option>
+          </select>
+        </div>
+        <div class="pill-field">
+          <i class="material-icons pill-ico">map</i>
+          <input type="text" id="f-quartier" placeholder="Quartier ou secteur" autocomplete="off">
+        </div>
+        <div class="pill-field">
+          <i class="material-icons pill-ico">signpost</i>
+          <input type="text" id="f-repere" placeholder="Repère connu (rue, boutique, carrefour)" autocomplete="off">
+        </div>
+        <p class="hint hint--err" id="err-lieu" style="display:none;"><i class="material-icons">error_outline</i> Indiquez au moins la commune et un repère pour que l'agent puisse localiser le problème.</p>
+        <div id="gps-ok" style="display:none;">
+          <div class="panel" style="border-radius:14px;border-color:#B7DFC9;">
+            <div class="panel-body" style="padding:14px 16px;display:flex;gap:10px;align-items:center;">
+              <i class="material-icons" style="color:var(--spbf-green);">check_circle</i>
+              <div style="font-size:13px;"><b>Position ajoutée.</b><br><span style="color:var(--spbf-ink-3);" id="gps-val">12.3764, -1.5298</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Étape 3 : description -->
+      <div class="form-step" data-step="3" style="display:none;">
+        <div class="pill-field pill-field--area">
+          <i class="material-icons pill-ico">edit_note</i>
+          <textarea id="f-desc" placeholder="Décrivez les faits : ce que vous observez, depuis quand, où exactement."></textarea>
+        </div>
+        <p class="hint">Décrivez les faits observés, sans accusation nominative. Exemple&nbsp;: «&nbsp;Le feu tricolore ne fonctionne plus au carrefour près de la pharmacie depuis ce matin.&nbsp;»</p>
+        <p class="hint hint--err" id="err-desc" style="display:none;"><i class="material-icons">error_outline</i> La description est obligatoire (20 caractères minimum).</p>
+
+        <div class="sec-title">Danger perçu</div>
+        <div class="seg" id="seg-danger">
+          <button class="seg-opt" data-level="faible"><i class="material-icons">info</i>Faible</button>
+          <button class="seg-opt" data-level="moyen"><i class="material-icons">warning</i>Moyen</button>
+          <button class="seg-opt" data-level="eleve"><i class="material-icons">report</i>Élevé</button>
+        </div>
+        <p class="hint">Auto-déclaration. L'agent garde la décision finale.</p>
+        <div id="danger-alert" style="display:none;">
+          <div class="alert-urgent" style="margin-top:12px;">
+            <i class="material-icons">warning</i>
+            <div><b>Risque perçu élevé.</b><span>Si le danger est immédiat, éloignez-vous de la zone et contactez directement le service compétent. Ce signalement sera mis en évidence au triage, sans promesse d'intervention.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Étape 4 : photo + contact -->
+      <div class="form-step" data-step="4" style="display:none;">
+        <div class="sec-title" style="margin-top:0;">Photo <span style="text-transform:none;letter-spacing:0;font-weight:500;">(facultative)</span></div>
+        <div id="photo-zone-wrap">
+          <div class="photo-zone" id="photo-zone">
+            <i class="material-icons">photo_camera</i>
+            <b>Prendre ou choisir une photo</b>
+            <span>Ne prenez pas de risque. Évitez visages, plaques et documents.</span>
+          </div>
+        </div>
+        <div id="photo-preview-wrap" style="display:none;">
+          <div class="photo-preview">
+            <img id="photo-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Aperçu de la photo jointe">
+            <span class="photo-tag">Métadonnées retirées à l'envoi</span>
+            <button class="rm" id="photo-rm" title="Retirer la photo"><i class="material-icons">close</i></button>
+          </div>
+        </div>
+        <p class="hint hint--err" id="err-photo" style="display:none;"><i class="material-icons">error_outline</i> Fichier refusé : seuls les formats image (JPEG, PNG) de moins de 5 Mo sont acceptés. L'envoi reste possible sans photo.</p>
+
+        <div class="sec-title">Contact <span style="text-transform:none;letter-spacing:0;font-weight:500;">(facultatif)</span></div>
+        <div class="pill-field">
+          <i class="material-icons pill-ico">phone</i>
+          <input type="tel" id="f-tel" placeholder="Téléphone" autocomplete="off">
+        </div>
+        <div class="pill-field">
+          <i class="material-icons pill-ico">mail</i>
+          <input type="email" id="f-mail" placeholder="Courriel" autocomplete="off">
+        </div>
+        <p class="hint">Le contact est conservé séparément du dossier public et sert uniquement à vous répondre si une précision est nécessaire. Il n'est jamais affiché publiquement.</p>
+
+        <div class="panel" style="margin-top:16px;border-radius:14px;">
+          <div class="panel-body" style="padding:14px 16px;">
+            <div class="chk"><i class="material-icons">check</i><div>Je décris des faits, sans accusation nominative.</div></div>
+            <div class="chk"><i class="material-icons">check</i><div>J'ai lu l'avertissement&nbsp;: ce service ne remplace pas les urgences.</div></div>
+            <div class="chk off"><i class="material-icons">info</i><div><a href="#" onclick="return false;" data-nav="sc-aide" style="color:var(--spbf-blue);font-weight:600;">Notice de confidentialité</a> — finalité, conservation et destinataires des données.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-ghost" id="btn-prev" style="display:none;"><i class="material-icons">arrow_back</i> Retour</button>
+        <button class="btn btn-grad" id="btn-next" style="flex:1;">Continuer <i class="material-icons" style="margin:0 0 0 4px;">arrow_forward</i></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ÉCRAN : CAMÉRA (inspiré de la maquette) ================= -->
+<section class="screen" id="sc-camera">
+  <div class="cam">
+    <div class="statusbar"><span>09:41</span><span class="statusbar-icons"><i class="material-icons">signal_cellular_alt</i><i class="material-icons">wifi</i><i class="material-icons">battery_full</i></span></div>
+    <div class="cam-view">
+      <img src="assets/img/signal-rue.jpg" alt="Vue de la rue à travers le viseur">
+      <div class="cam-frame"><span></span><span></span><span></span><span></span></div>
+      <div class="cam-note">Repérez le problème dans le cadre</div>
+      <div class="cam-marker"><i class="material-icons">location_on</i></div>
+      <div class="cam-wordmark">SIGNALEMENT <span>PUBLIC BF</span></div>
+    </div>
+    <div class="cam-modes">
+      <button class="cam-mode" data-mode="nuit">Nuit</button>
+      <button class="cam-mode is-on" data-mode="photo">Photo</button>
+      <button class="cam-mode" data-mode="video">Vidéo</button>
+      <button class="cam-mode" data-mode="portrait">Portrait</button>
+      <button class="cam-mode" data-mode="plus">Plus</button>
+    </div>
+    <div class="cam-bar">
+      <button class="cam-side" id="cam-back"><i class="material-icons">close</i></button>
+      <button class="cam-shutter" id="cam-shutter" title="Prendre la photo"></button>
+      <button class="cam-side" id="cam-flip"><i class="material-icons">flip_camera_ios</i></button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ÉCRAN : CONFIRMATION ================= -->
+<section class="screen" id="sc-confirmation">
+  <div class="device-scroll" data-scroll>
+    <div class="statusbar"><span>09:41</span><span class="statusbar-icons"><i class="material-icons">signal_cellular_alt</i><i class="material-icons">wifi</i><i class="material-icons">battery_full</i></span></div>
+    <div class="screen-body" style="padding-top:30px;">
+      <div class="receipt">
+        <div class="receipt-ok"><i class="material-icons" style="font-size:32px;">check</i></div>
+        <div style="font-size:15px;font-weight:600;">Votre signalement a bien été enregistré.</div>
+        <div class="receipt-lbl" style="margin-top:14px;">Référence de suivi</div>
+        <div class="receipt-ref" id="conf-ref">SPBF-XXXX-XXXX</div>
+        <p class="hint" style="margin-top:6px;">Conservez-la : elle est la seule façon de retrouver votre dossier sans créer de compte.</p>
+      </div>
+
+      <div class="sec-title">Prochaines étapes</div>
+      <div class="panel" style="border-radius:14px;">
+        <div class="panel-body" style="padding:16px 18px;">
+          <div class="chk"><i class="material-icons">schedule</i><div><b>Vérification par un agent.</b> Un agent contrôle la catégorie, le lieu et les doublons éventuels.</div></div>
+          <div class="chk"><i class="material-icons">alt_route</i><div><b>Orientation.</b> Le dossier est rattaché au service responsable de l'ouvrage.</div></div>
+          <div class="chk off"><i class="material-icons">hourglass_empty</i><div><b>Suivi.</b> Revenez avec votre référence pour voir l'état du dossier. Aucun délai de réparation n'est garanti.</div></div>
+        </div>
+      </div>
+
+      <button class="btn btn-grad btn-block" style="margin-top:18px;" data-nav="sc-suivi">
+        <i class="material-icons">receipt_long</i> Suivre ce dossier
+      </button>
+      <button class="btn btn-ghost btn-block" style="margin-top:10px;" data-nav="sc-accueil">
+        <i class="material-icons">home</i> Retour à l'accueil
+      </button>
+      <p class="hint" style="margin-top:16px;text-align:center;">
+        Un agent peut demander une précision. Si vous avez laissé un contact, il sera utilisé uniquement pour vous répondre.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ÉCRAN : SUIVI ================= -->
+<section class="screen" id="sc-suivi">
+  <div class="device-scroll" data-scroll>
+    <div class="statusbar"><span>09:41</span><span class="statusbar-icons"><i class="material-icons">signal_cellular_alt</i><i class="material-icons">wifi</i><i class="material-icons">battery_full</i></span></div>
+
+    <header class="appbar appbar--flat">
+      <div class="appbar-row">
+        <button class="iconbtn" data-nav="sc-accueil" style="background:#F1F4F6;color:var(--spbf-ink);"><i class="material-icons">arrow_back</i></button>
+        <div class="brand-txt" style="font-weight:700;font-size:15px;">Suivre un signalement</div>
+      </div>
+    </header>
+
+    <div class="screen-body">
+      <div id="suivi-form">
+        <div class="pill-field">
+          <i class="material-icons pill-ico">tag</i>
+          <input type="text" id="suivi-ref" placeholder="Référence (ex. SPBF-9JKP-44TN)" autocomplete="off">
+        </div>
+        <button class="btn btn-grad btn-block" id="btn-suivi">
+          <i class="material-icons">search</i> Consulter le statut
+        </button>
+        <p class="hint hint--err" id="err-suivi" style="display:none;"><i class="material-icons">error_outline</i> Aucun dossier ne correspond à cette référence. Vérifiez la saisie ou saisissez-la à nouveau.</p>
+        <p class="hint">Pour le prototype&nbsp;: essayez <b>SPBF-9JKP-44TN</b> (transmis) ou <b>SPBF-7K4M-92QX</b> (en vérification).</p>
+
+        <div class="sec-title">Vos dépôts récents (prototype)</div>
+        <div id="suivi-recents"></div>
+      </div>
+
+      <div id="suivi-detail" style="display:none;">
+        <div class="dossier-card" style="margin-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+            <span class="dossier-ref" id="sv-ref"></span>
+            <span id="sv-pr"></span>
+          </div>
+          <div class="dossier-title" id="sv-titre"></div>
+          <div class="dossier-meta" id="sv-meta"></div>
+        </div>
+
+        <div class="sec-title" style="margin-top:0;">Avancement</div>
+        <div class="track" id="sv-track"></div>
+
+        <div id="sv-demande" style="display:none;">
+          <div class="sec-title">Information demandée</div>
+          <div class="alert-urgent" style="border-left-color:var(--spbf-blue);background:#F1F7FC;border-color:#C4DCF0;">
+            <i class="material-icons" style="color:var(--spbf-blue);">help</i>
+            <div><b style="color:var(--spbf-ink);">Question de l'agent</b><span style="color:var(--spbf-ink-2);" id="sv-demande-txt"></span></div>
+          </div>
+        </div>
+
+        <div id="sv-cloture" style="display:none;">
+          <div class="sec-title">Motif de clôture</div>
+          <div class="panel" style="border-radius:14px;"><div class="panel-body" style="padding:14px 16px;font-size:13px;line-height:1.5;" id="sv-cloture-txt"></div></div>
+        </div>
+
+        <div class="sec-title">Ce que ce dossier ne montre pas</div>
+        <div class="note-in">
+          <i class="material-icons">lock</i>
+          Les notes internes des agents, les coordonnées exactes, les contacts d'autres personnes et les pièces non modérées ne sont pas visibles ici.
+        </div>
+
+        <button class="btn btn-ghost btn-block" style="margin-top:18px;" id="btn-suivi-retour">
+          <i class="material-icons">arrow_back</i> Rechercher une autre référence
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ÉCRAN : AIDE / LIMITES ================= -->
+<section class="screen" id="sc-aide">
+  <div class="device-scroll" data-scroll>
+    <div class="statusbar"><span>09:41</span><span class="statusbar-icons"><i class="material-icons">signal_cellular_alt</i><i class="material-icons">wifi</i><i class="material-icons">battery_full</i></span></div>
+
+    <header class="appbar appbar--flat">
+      <div class="appbar-row">
+        <button class="iconbtn" data-nav="sc-accueil" style="background:#F1F4F6;color:var(--spbf-ink);"><i class="material-icons">arrow_back</i></button>
+        <div class="brand-txt" style="font-weight:700;font-size:15px;">Ce service en clair</div>
+      </div>
+    </header>
+
+    <div class="screen-body">
+      <div class="sec-title" style="margin-top:0;">Ce que la plateforme fait</div>
+      <div class="panel" style="border-radius:14px;">
+        <div class="panel-body" style="padding:16px 18px;">
+          <div class="chk"><i class="material-icons">check_circle</i><div>Recense les signalements de problèmes de l'espace public.</div></div>
+          <div class="chk"><i class="material-icons">check_circle</i><div>Les localise et supprime les doublons.</div></div>
+          <div class="chk"><i class="material-icons">check_circle</i><div>Les oriente vers le service responsable de l'ouvrage.</div></div>
+          <div class="chk"><i class="material-icons">check_circle</i><div>Vous rend l'état de votre dossier, étape par étape.</div></div>
+        </div>
+      </div>
+
+      <div class="sec-title">Ce qu'elle ne fait pas</div>
+      <div class="panel" style="border-radius:14px;">
+        <div class="panel-body" style="padding:16px 18px;">
+          <div class="chk off"><i class="material-icons">block</i><div>Elle ne remplace pas les services d'urgence.</div></div>
+          <div class="chk off"><i class="material-icons">block</i><div>Elle ne garantit ni intervention, ni délai, ni budget.</div></div>
+          <div class="chk off"><i class="material-icons">block</i><div>Elle ne transmet rien automatiquement à un organisme sans accord actif.</div></div>
+          <div class="chk off"><i class="material-icons">block</i><div>Elle ne publie ni coordonnées exactes, ni commentaires publics ouverts.</div></div>
+        </div>
+      </div>
+
+      <div class="sec-title">Contacts directs à privilégier</div>
+      <div class="dossier-card">
+        <div class="dossier-title" style="margin-top:0;">Fuites d'eau</div>
+        <div class="dossier-meta"><span><i class="material-icons">call</i>80 00 11 11</span></div>
+        <p class="hint" style="margin-top:6px;">Numéro publié par l'opérateur national de l'eau. À revérifier avant publication.</p>
+      </div>
+      <div class="dossier-card">
+        <div class="dossier-title" style="margin-top:0;">Pannes et déclarations électriques</div>
+        <div class="dossier-meta"><span><i class="material-icons">call</i>80 00 11 30</span></div>
+        <p class="hint" style="margin-top:6px;">Guichet virtuel et numéro vert de l'opérateur national d'électricité. À revérifier avant publication.</p>
+      </div>
+
+      <div class="sec-title">Vos données</div>
+      <div class="panel" style="border-radius:14px;">
+        <div class="panel-body" style="padding:16px 18px;font-size:13px;line-height:1.55;color:var(--spbf-ink-2);">
+          Les coordonnées exactes, les contacts et les photos sont séparés du dossier public.
+          Les photos acceptées sont retraitées pour supprimer leurs métadonnées.
+          Le responsable de traitement, l'hébergeur et la durée de conservation doivent être
+          confirmés avant la mise en production — ce prototype n'est pas un service officiel.
+        </div>
+      </div>
+
+      <button class="btn btn-ghost btn-block" style="margin-top:20px;" data-nav="sc-accueil">
+        <i class="material-icons">home</i> Retour à l'accueil
+      </button>
+    </div>
+  </div>
+</section>
+
+  </div>
+</div>
+
+<script src="vendor/js/jquery.min.js"></script>
+<script src="vendor/js/materialize.min.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

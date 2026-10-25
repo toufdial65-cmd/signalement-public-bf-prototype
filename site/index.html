@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signalement Public BF — Prototype</title>
+<meta name="description" content="Prototype non fonctionnel de la plateforme Signalement Public BF : parcours citoyen mobile et console de traitement.">
+<link rel="stylesheet" href="vendor/css/materialize.min.css">
+<link rel="stylesheet" href="vendor/fonts/fonts-local.css">
+<link rel="stylesheet" href="vendor/fonts/icons-local.css">
+<link rel="stylesheet" href="assets/css/app.css">
+<style>
+  .plate { background:#fff; border:1px solid var(--spbf-line); border-radius:var(--spbf-r-lg);
+           box-shadow:var(--spbf-sh-1); overflow:hidden; }
+  .plate-head { display:flex; align-items:center; gap:10px; padding:13px 16px; border-bottom:1px solid var(--spbf-line); }
+  .plate-head b { font-size:13.5px; }
+  .plate-head .num { font-family:var(--spbf-mono); font-size:11px; color:var(--spbf-blue); font-weight:500; }
+  .plate-head span { margin-left:auto; font-size:11px; color:var(--spbf-ink-3); }
+  .plate-img { aspect-ratio:392/812; overflow:hidden; background:var(--spbf-surface-2); }
+  .plate-img img { width:100%; height:100%; object-fit:cover; object-position:top center; display:block; }
+  .plate-cap { padding:11px 16px 14px; font-size:12px; color:var(--spbf-ink-2); line-height:1.45; }
+  .sheet { display:grid; grid-template-columns:repeat(auto-fill,minmax(198px,1fr)); gap:18px; }
+  .sheet .plate-img { aspect-ratio:392/812; }
+
+  .wide-shot { border:1px solid var(--spbf-line); border-radius:var(--spbf-r-lg); overflow:hidden; background:#fff; box-shadow:var(--spbf-sh-1); }
+  .wide-shot img { width:100%; display:block; }
+  .wide-shot .cap { padding:13px 16px 15px; font-size:12.5px; color:var(--spbf-ink-2); }
+
+  .flowline { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:0 0 20px; }
+  .flowline .fchip { font-size:12px; }
+  .flowline .arr { color:var(--spbf-line-strong); font-size:16px; }
+
+  table.map { width:100%; border-collapse:collapse; font-size:12.5px; }
+  table.map th { text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.09em;
+                 color:var(--spbf-ink-3); padding:0 12px 9px; border-bottom:1px solid var(--spbf-line); }
+  table.map td { padding:10px 12px; border-bottom:1px solid var(--spbf-line); vertical-align:top; line-height:1.45; }
+  table.map { min-width: 620px; }
+  table.map td:first-child { font-family:var(--spbf-mono); font-size:11.5px; color:var(--spbf-blue-deep); white-space:nowrap; }
+  table.map tr:last-child td { border-bottom:0; }
+</style>
+</head>
+<body>
+
+<header class="appbar" style="position:relative;border-radius:0;padding:16px 24px 20px;">
+  <div class="appbar-row">
+    <a class="brand brand--inv" href="#">
+      <span class="brand-mark"><i class="material-icons">location_on</i></span>
+      <span class="brand-txt">Signalement <span>Public BF</span></span>
+    </a>
+    <div class="appbar-actions">
+      <span class="demo-chip" style="background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.28);color:#fff;">Prototype · non fonctionnel</span>
+    </div>
+  </div>
+</header>
+
+<main class="showcase">
+
+  <div class="showcase-head">
+    <span class="eyebrow">Prototype d'interface — Burkina Faso</span>
+    <h1>Signalez un problème de l'espace public. Suivez ce qu'il devient.</h1>
+    <p>Prototype non fonctionnel construit sur <b>Materialize CSS</b>, à partir des maquettes de référence fournies.
+       Deux surfaces&nbsp;: le parcours citoyen sur mobile et la console de traitement pour les agents.
+       Toutes les données sont simulées.</p>
+  </div>
+
+  <div class="linkcards">
+    <a class="linkcard" href="/citoyen">
+      <span class="linkcard-ico" style="background:linear-gradient(135deg,rgba(12,184,195,.16),rgba(0,104,195,.16));color:var(--spbf-blue-deep);"><i class="material-icons">smartphone</i></span>
+      <span><b>Parcours citoyen</b><span>Dépôt, localisation, photo, confirmation et suivi par référence</span></span>
+    </a>
+    <a class="linkcard" href="/console">
+      <span class="linkcard-ico" style="background:linear-gradient(135deg,rgba(22,32,43,.10),rgba(22,32,43,.05));color:var(--spbf-ink);"><i class="material-icons">dashboard</i></span>
+      <span><b>Console de traitement</b><span>File de tri, doublons, orientation, indicateurs et audit</span></span>
+    </a>
+    <a class="linkcard" href="/#planche">
+      <span class="linkcard-ico" style="background:linear-gradient(135deg,rgba(222,166,41,.20),rgba(222,166,41,.08));color:var(--spbf-amber-deep);"><i class="material-icons">grid_view</i></span>
+      <span><b>Planche d'écrans</b><span>Les huit écrans du parcours citoyen</span></span>
+    </a>
+  </div>
+
+  <div class="note-strip">
+    <b>Ce que ce prototype n'est pas.</b> Ce n'est pas un service public officiel et il n'effectue aucun envoi&nbsp;:
+    aucune donnée ne quitte le navigateur, aucune référence n'est enregistrée, aucune photo n'est réellement prise.
+    Les dossiers, agents, organismes et indicateurs sont fictifs. L'opérateur du service, le responsable de traitement,
+    l'hébergeur et les circuits de transmission restent à confirmer avant toute mise en production.
+  </div>
+
+  <!-- ============ PARCOURS CITOYEN ============ -->
+  <h2 style="font-size:21px;font-weight:700;margin:38px 0 6px;letter-spacing:-.01em;">Parcours citoyen</h2>
+  <p style="font-size:14px;color:var(--spbf-ink-2);margin:0 0 18px;line-height:1.55;">
+    Mobile d'abord, sans compte. Le formulaire tient en quatre étapes courtes&nbsp;; la photo est facultative&nbsp;;
+    la référence n'apparaît qu'après l'enregistrement confirmé.
+  </p>
+
+  <div class="flowline">
+    <span class="fchip is-on">Accueil</span><span class="arr">→</span>
+    <span class="fchip">Catégorie</span><span class="arr">→</span>
+    <span class="fchip">Localisation</span><span class="arr">→</span>
+    <span class="fchip">Description</span><span class="arr">→</span>
+    <span class="fchip">Photo &amp; contact</span><span class="arr">→</span>
+    <span class="fchip">Référence</span><span class="arr">→</span>
+    <span class="fchip">Suivi</span>
+  </div>
+
+  <div class="sheet" id="planche">
+    <figure class="plate" style="margin:0;">
+      <div class="plate-img"><img src="assets/shots/01-accueil.png" alt="Écran d'accueil du parcours citoyen"></div>
+      <figcaption class="plate-cap"><b>Accueil</b><br>Le service, l'avertissement d'urgence et les huit catégories.</figcaption>
+    </figure>
+    <figure class="plate" style="margin:0;">
+      <div class="plate-img"><img src="assets/shots/02-formulaire.png" alt="Choix de la catégorie du problème"></div>
+      <figcaption class="plate-cap"><b>Étape 1 — Catégorie</b><br>Une seule sélection, avec des exemples concrets par catégorie.</figcaption>
+    </figure>
+    <figure class="plate" style="margin:0;">
+      <div class="plate-img"><img src="assets/shots/03-localisation.png" alt="Étape de localisation du signalement"></div>
+      <figcaption class="plate-cap"><b>Étape 2 — Localisation</b><br>GPS sur autorisation, sinon commune, quartier et repère. Le refus ne bloque pas.</figcaption>
+    </figure>
+    <figure class="plate" style="margin:0;">
+      <div class="plate-img"><img src="assets/shots/03b-description.png" alt="Étape de description du problème et danger déclaré"></div>
+      <figcaption class="plate-cap"><b>Étape 3 — Description</b><br>Faits observés et danger déclaré ; l'alerte d'urgence s'affiche au niveau élevé.</figcaption>
+    </figure>
+    <figure class="plate" style="margin:0;">
+      <div class="plate-img"><img src="assets/shots/04-photo-contact.png" alt="Étape photo et contact"></div>
+      <figcaption class="plate-cap"><b>Étape 4 — Photo et contact</b><br>Photo facultative avec métadonnées retirées, contact facultatif et séparé du dossier public.</figcaption>
+    </figure>
+    <figure class="plate" style="margin:0;">
+      <div class="plate-img"><img src="assets/shots/05-confirmation.png" alt="Écran de confirmation avec la référence"></div>
+      <figcaption class="plate-cap"><b>Confirmation</b><br>La référence aléatoire s'affiche après l'enregistrement, jamais avant.</figcaption>
+    </figure>
+    <figure class="plate" style="margin:0;">
+      <div class="plate-img"><img src="assets/shots/06-suivi.png" alt="Écran de suivi d'un dossier"></div>
+      <figcaption class="plate-cap"><b>Suivi</b><br>Avancement étape par étape, sans notes internes ni coordonnées exactes.</figcaption>
+    </figure>
+    <figure class="plate" style="margin:0;">
+      <div class="plate-img"><img src="assets/shots/07-aide.png" alt="Écran des limites du service"></div>
+      <figcaption class="plate-cap"><b>Ce service en clair</b><br>Ce qu'il fait, ce qu'il ne fait pas, et les contacts directs.</figcaption>
+    </figure>
+  </div>
+
+  <!-- ============ CONSOLE ============ -->
+  <h2 style="font-size:21px;font-weight:700;margin:44px 0 6px;letter-spacing:-.01em;">Console de traitement</h2>
+  <p style="font-size:14px;color:var(--spbf-ink-2);margin:0 0 18px;line-height:1.55;">
+    Surface dense, pensée pour l'action. Les règles métier du PRD sont appliquées dans l'interface&nbsp;:
+    pas de « Transmis » sans transfert confirmé, pas de fusion qui efface une référence.
+  </p>
+
+  <div class="wide-shot" style="margin-bottom:18px;">
+    <img src="assets/shots/10-console-file.png" alt="Console de traitement — file de travail">
+    <div class="cap"><b>File de travail</b> — filtres par catégorie, statut, zone et mot-clé&nbsp;; pastilles de priorité P1 à P4&nbsp;; indicateurs de doublons possibles.</div>
+  </div>
+
+  <div class="wide-shot" style="margin-bottom:18px;">
+    <img src="assets/shots/11-console-dossier.png" alt="Console de traitement — panneau dossier">
+    <div class="cap"><b>Dossier</b> — description, photo, localisation, note interne distinguée du message public au citoyen, historique des statuts.</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px;">
+    <div class="wide-shot">
+      <img src="assets/shots/12-console-indicateurs.png" alt="Console de traitement — indicateurs">
+      <div class="cap"><b>Indicateurs</b> — dépôts, taux exploitable, délai de premier tri, dossiers en attente.</div>
+    </div>
+    <div class="wide-shot">
+      <img src="assets/shots/13-console-routage.png" alt="Console de traitement — règles de routage">
+      <div class="cap"><b>Routage</b> — organismes, zones couvertes, canal autorisé et date de dernière vérification.</div>
+    </div>
+  </div>
+
+  <!-- ============ COUVERTURE PRD ============ -->
+  <h2 style="font-size:21px;font-weight:700;margin:44px 0 6px;letter-spacing:-.01em;">Ce que le prototype couvre</h2>
+  <p style="font-size:14px;color:var(--spbf-ink-2);margin:0 0 18px;line-height:1.55;">
+    Repères issus des trois versions du PRD rangées dans <code>kb/</code>. Les fonctions non couvertes
+    restent hors périmètre de ce prototype.
+  </p>
+
+  <div class="panel">
+    <div class="panel-body">
+      <div style="overflow-x:auto;">
+      <table class="map">
+        <thead><tr><th style="width:120px;">Fonction</th><th style="width:230px;">Dans le prototype</th><th>Écart assumé</th></tr></thead>
+        <tbody>
+          <tr><td>F01 — Dépôt citoyen</td><td>Formulaire 4 étapes, GPS ou saisie manuelle, photo et contact facultatifs</td><td>Aucun envoi réel&nbsp;; les photos sont simulées</td></tr>
+          <tr><td>F02 — Suivi par référence</td><td>Référence aléatoire non séquentielle, timeline de statut, message public</td><td>Suivi simulé pour deux références de démonstration</td></tr>
+          <tr><td>F03 — Traitement</td><td>File, filtres, priorité P1–P4, demande de précision, fusion de doublons</td><td>La priorité est affichée, jamais décidée automatiquement</td></tr>
+          <tr><td>F04 — Orientation et clôture</td><td>Routage conditionné à un circuit actif, transfert confirmé exigé</td><td>Le changement de statut n'est pas persisté</td></tr>
+          <tr><td>F05 — Administration et traçabilité</td><td>Journal d'audit, règles de routage, rôles et accès, indicateurs</td><td>Pas de back-office de configuration des catégories</td></tr>
+          <tr><td>CR02 / CR03</td><td>Dépôt sans photo accepté, fichier non image refusé, aucune fausse confirmation</td><td>Les rejets sont déclenchés de façon aléatoire pour la démonstration</td></tr>
+          <tr><td>CR06</td><td>« Transmis » bloqué sans transfert confirmé&nbsp;; « À orienter » conservé</td><td>Règle visible dans l'interface, pas appliquée côté serveur</td></tr>
+          <tr><td>CR07</td><td>Avertissement d'urgence sur l'accueil et sur le danger élevé</td><td>Aucun contact d'urgence réel n'est vérifié</td></tr>
+          <tr><td>Hors périmètre</td><td>Notifications, carte publique, multilinguisme, PWA, application native</td><td>Non traités, conformément au PRD</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="note-strip" style="margin-top:26px;">
+    <b>Avant de transformer ce prototype en application.</b> Identifier l'opérateur et le responsable de traitement,
+    confirmer au moins un circuit de réception par catégorie activée, faire vérifier le cadre juridique
+    (loi n° 037-2026/ALP, décret n° 2026-1034/PF) et l'hébergement, puis rendre la référence non devinable
+    et le contrôle d'accès serveur. Le PRD le rappelle&nbsp;: si les circuits de traitement ne sont pas prêts,
+    une maquette ou un pilote fermé vaut mieux qu'un formulaire public qui accumule des dossiers sans suite.
+  </div>
+
+  <p style="font-size:12px;color:var(--spbf-ink-3);text-align:center;margin-top:34px;line-height:1.6;">
+    Prototype non fonctionnel — données de démonstration.<br>
+    Materialize CSS 1.0.0 · Public Sans · Material Icons — tous les dépendants sont servis localement.
+  </p>
+</main>
+
+</body>
+</html>
